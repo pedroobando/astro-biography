@@ -146,7 +146,9 @@ const biographyProfile = defineCollection({
       influentialPediatrician: z.string(),
       cohortName: z.string(),
     }),
-    subspecialties: z.array(z.object({ name: z.string(), institution: z.string(), years: z.string(), mentor: z.string() })),
+    subspecialties: z.array(
+      z.object({ name: z.string(), institution: z.string(), years: z.string(), mentor: z.string() })
+    ),
     careerStats: z.object({
       childrenAttended: z.number(),
       generationsOfFamilies: z.number(),
@@ -186,17 +188,18 @@ const biographyProfile = defineCollection({
 // Biography timeline - MDX files for timeline events
 const biographyTimeline = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/biography/timeline' }),
-  schema: z.object({
-    title: z.string(),
-    year: z.number(),
-    month: z.number().optional(),
-    day: z.number().optional(),
-    category: z.enum(['personal', 'education', 'career', 'recognition', 'publication']),
-    icon: z.string(),
-    summary: z.string(),
-    image: z.string().optional(),
-    order: z.number(),
-  }),
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      year: z.number(),
+      month: z.number().optional(),
+      day: z.number().optional(),
+      category: z.enum(['personal', 'education', 'career', 'recognition', 'publication']),
+      icon: z.string(),
+      summary: z.string(),
+      image: image().optional(),
+      order: z.number(),
+    }),
 });
 
 // Biography book - MDX file for book information
