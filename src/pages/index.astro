@@ -24,7 +24,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
 <LandingLayout
   title={`${siteConfig.name} - Pediatra Puericultor | 60 años de trayectoria`}
   description={`Biografía oficial del Dr. Pedro Rafael Medina Millan - ${profile.data.careerStats.yearsOfService} años de trayectoria, ${profile.data.careerStats.childrenAttended.toLocaleString()} niños atendidos. Autor de "${book.data.title}".`}
-  image="/og-default.svg"
+  image={siteConfig.ogImage}
   includePersonSchema={true}
   includeProfessionalServiceSchema={true}
 >
