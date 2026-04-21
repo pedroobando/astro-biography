@@ -1,0 +1,287 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import { Hero } from '@/components/hero';
+import Button from '@/components/ui/form/Button/Button.astro';
+import Badge from '@/components/ui/data-display/Badge/Badge.astro';
+import Card from '@/components/ui/data-display/Card/Card.astro';
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import doctorImage from '@/assets/dr-medina/doctor.jpg';
+
+const [profile] = await getCollection('biographyProfile');
+const timelineEvents = await getCollection('biographyTimeline');
+const sortedEvents = timelineEvents.sort((a, b) => a.data.order - b.data.order);
+
+// Category colors
+const categoryColors: Record<string, string> = {
+  personal: 'bg-purple-500',
+  education: 'bg-blue-500',
+  career: 'bg-green-500',
+  recognition: 'bg-yellow-500',
+  publication: 'bg-orange-500',
+};
+
+const categoryLabels: Record<string, string> = {
+  personal: 'Personal',
+  education: 'Educación',
+  career: 'Carrera',
+  recognition: 'Reconocimiento',
+  publication: 'Publicación',
+};
+---
+
+<PageLayout
+  title={`Sobre Mí | ${profile.data.name}`}
+  description={`Biografía completa de ${profile.data.name}, ${profile.data.specialty} con ${profile.data.careerStats.yearsOfService} años de trayectoria. Conoce su historia desde su nacimiento en 1939 hasta la actualidad.`}
+  showScrollProgress={true}
+>
+  <!-- Hero -->
+  <Hero layout="split" size="lg">
+    <div slot="left" class="flex flex-col gap-6">
+      <Badge variant="brand" pill class="w-fit">
+        <Icon name="user" size="sm" />
+        Biografía
+      </Badge>
+      
+      <h1 class="font-display text-4xl md:text-5xl font-bold text-foreground">
+        {profile.data.name}
+      </h1>
+      
+      <p class="text-xl text-brand-500 font-medium">
+        {profile.data.specialty}
+      </p>
+      
+      <p class="text-lg text-foreground-muted leading-relaxed">
+        {profile.data.careerStats.yearsOfService} años de trayectoria dedicados a la salud de los niños venezolanos. 
+        Creador de la primera UCIN en la región centro-oriental, ex-Coordinador Nacional de Neonatología, 
+        y formador de {profile.data.careerStats.pediatriciansTrained}+ pediatras.
+      </p>
+      
+      <div class="flex flex-wrap gap-3 mt-2">
+        <Button variant="outline" size="sm" href="#timeline">
+          <Icon name="history" size="sm" />
+          Ver Timeline
+        </Button>
+        <Button variant="outline" size="sm" href="#legacy">
+          <Icon name="heart" size="sm" />
+          Legado
+        </Button>
+      </div>
+    </div>
+
+    <div slot="right" class="relative">
+      <div class="relative aspect-square max-w-sm mx-auto">
+        <div class="absolute inset-0 bg-gradient-to-br from-brand-500/30 to-brand-500/10 rounded-3xl transform -rotate-3"></div>
+        <Image
+          src={doctorImage}
+          alt={`Foto de ${profile.data.name}`}
+          class="relative rounded-3xl shadow-2xl w-full h-full object-cover"
+          width={400}
+          height={400}
+        />
+      </div>
+    </div>
+  </Hero>
+
+  <!-- Datos Personales -->
+  <section class="py-16 bg-background-secondary border-y border-border">
+    <div class="mx-auto max-w-6xl px-6">
+      <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+        <Card variant="elevated" padding="lg" class="text-center">
+          <Icon name="calendar" class="w-8 h-8 text-brand-500 mx-auto mb-3" />
+          <p class="text-sm text-foreground-muted mb-1">Nacimiento</p>
+          <p class="text-lg font-semibold text-foreground">
+            {new Date(profile.data.birthDate).toLocaleDateString('es-VE', { 
+              year: 'numeric', 
+              month: 'long', 
+              day: 'numeric' 
+            })}
+          </p>
+          <p class="text-sm text-foreground-muted">{profile.data.birthPlace}</p>
+        </Card>
+
+        <Card variant="elevated" padding="lg" class="text-center">
+          <Icon name="graduation-cap" class="w-8 h-8 text-brand-500 mx-auto mb-3" />
+          <p class="text-sm text-foreground-muted mb-1">Graduación</p>
+          <p class="text-lg font-semibold text-foreground">{profile.data.education.university.graduationDate.split('-')[0]}</p>
+          <p class="text-sm text-foreground-muted">{profile.data.education.university.name}</p>
+        </Card>
+
+        <Card variant="elevated" padding="lg" class="text-center">
+          <Icon name="briefcase" class="w-8 h-8 text-brand-500 mx-auto mb-3" />
+          <p class="text-sm text-foreground-muted mb-1">Consultorio</p>
+          <p class="text-lg font-semibold text-foreground">Desde {profile.data.office.openingYear}</p>
+          <p class="text-sm text-foreground-muted">{profile.data.office.active ? 'Activo' : 'Cerrado'}</p>
+        </Card>
+
+        <Card variant="elevated" padding="lg" class="text-center">
+          <Icon name="heart" class="w-8 h-8 text-brand-500 mx-auto mb-3" />
+          <p class="text-sm text-foreground-muted mb-1">Niños Atendidos</p>
+          <p class="text-lg font-semibold text-foreground">{profile.data.careerStats.childrenAttended.toLocaleString()}+</p>
+          <p class="text-sm text-foreground-muted">En {profile.data.careerStats.yearsOfService} años</p>
+        </Card>
+      </div>
+    </div>
+  </section>
+
+  <!-- Timeline Section -->
+  <section id="timeline" class="py-[var(--space-section-md)] bg-background">
+    <div class="mx-auto max-w-4xl px-6">
+      <div class="text-center mb-12" data-reveal>
+        <Badge variant="brand" pill class="mb-4">Línea de Tiempo</Badge>
+        <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground mb-4">
+          Trayectoria Vital
+        </h2>
+        <p class="text-lg text-foreground-muted max-w-2xl mx-auto">
+          Un recorrido por los momentos más importantes de la vida y carrera del Dr. Medina.
+          Haz clic en cualquier evento para ver más detalles.
+        </p>
+      </div>
+
+      <div class="relative">
+        {/* Timeline line */}
+        <div class="absolute left-4 md:left-1/2 top-0 bottom-0 w-0.5 bg-border md:-translate-x-1/2"></div>
+
+        {sortedEvents.map((event, index) => (
+          <div class="relative mb-8 md:mb-12" data-reveal data-reveal-delay={(index % 3) + 1}>
+            <a 
+              href={`/sobre-mi/evento/${event.id}`}
+              class={`flex flex-col md:flex-row gap-4 md:gap-8 items-start group ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}`}
+            >
+              {/* Timeline dot */}
+              <div class="absolute left-4 md:left-1/2 w-4 h-4 rounded-full bg-brand-500 border-4 border-background md:-translate-x-1/2 z-10 group-hover:scale-125 transition-transform"></div>
+              
+              {/* Content */}
+              <div class={`pl-12 md:pl-0 md:w-1/2 ${index % 2 === 0 ? 'md:pr-12 md:text-right' : 'md:pl-12'}`}>
+                <Card 
+                  variant="elevated" 
+                  hover 
+                  padding="lg" 
+                  class="group-hover:border-brand-500/50 transition-colors"
+                >
+                  <div class={`flex flex-col gap-2 ${index % 2 === 0 ? 'md:items-end' : 'md:items-start'}`}>
+                    <div class={`flex items-center gap-2 ${index % 2 === 0 ? 'md:flex-row-reverse' : ''}`}>
+                      <span class={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium text-white ${categoryColors[event.data.category]}`}>
+                        <Icon name={event.data.icon} size="sm" />
+                        {categoryLabels[event.data.category]}
+                      </span>
+                      <span class="text-sm font-bold text-brand-500">{event.data.year}</span>
+                    </div>
+                    
+                    <h3 class="text-lg font-semibold text-foreground group-hover:text-brand-500 transition-colors">
+                      {event.data.title}
+                    </h3>
+                    
+                    <p class="text-sm text-foreground-muted line-clamp-2">
+                      {event.data.summary}
+                    </p>
+                    
+                    <div class={`flex items-center gap-1 text-sm text-brand-500 font-medium mt-2 ${index % 2 === 0 ? 'md:flex-row-reverse' : ''}`}>
+                      <span>Ver detalles</span>
+                      <Icon name="arrow-right" size="sm" class="group-hover:translate-x-1 transition-transform" />
+                    </div>
+                  </div>
+                </Card>
+              </div>
+
+              {/* Empty space for the other side */}
+              <div class="hidden md:block md:w-1/2"></div>
+            </a>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Legado Section -->
+  <section id="legacy" class="py-[var(--space-section-md)] bg-brand-500/5 dark:bg-background-secondary">
+    <div class="mx-auto max-w-6xl px-6">
+      <div class="text-center mb-12" data-reveal>
+        <Badge variant="brand" pill class="mb-4">Legado</Badge>
+        <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground">
+          Palabras del Dr. Medina
+        </h2>
+      </div>
+
+      <div class="grid gap-6 md:grid-cols-3" data-reveal data-reveal-delay="1">
+        {/* Mensaje a pediatras */}
+        <Card variant="elevated" padding="lg" class="h-full">
+          <div class="flex flex-col h-full">
+            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500 mb-4">
+              <Icon name="users" size="lg" />
+            </div>
+            <h3 class="text-lg font-semibold text-foreground mb-3">A los Jóvenes Pediatras</h3>
+            <blockquote class="text-sm text-foreground-muted leading-relaxed italic flex-1">
+              "{profile.data.legacy.messageToPediatricians.substring(0, 200)}..."
+            </blockquote>
+          </div>
+        </Card>
+
+        {/* Mensaje a padres */}
+        <Card variant="elevated" padding="lg" class="h-full">
+          <div class="flex flex-col h-full">
+            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500 mb-4">
+              <Icon name="heart" size="lg" />
+            </div>
+            <h3 class="text-lg font-semibold text-foreground mb-3">A los Padres</h3>
+            <blockquote class="text-sm text-foreground-muted leading-relaxed italic flex-1">
+              "{profile.data.legacy.messageToParents.substring(0, 200)}..."
+            </blockquote>
+          </div>
+        </Card>
+
+        {/* Cómo quiere ser recordado */}
+        <Card variant="elevated" padding="lg" class="h-full">
+          <div class="flex flex-col h-full">
+            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500 mb-4">
+              <Icon name="star" size="lg" />
+            </div>
+            <h3 class="text-lg font-semibold text-foreground mb-3">Cómo Quiere Ser Recordado</h3>
+            <blockquote class="text-sm text-foreground-muted leading-relaxed italic flex-1">
+              "{profile.data.legacy.howToBeRemembered.substring(0, 200)}..."
+            </blockquote>
+          </div>
+        </Card>
+      </div>
+
+      <div class="text-center mt-10" data-reveal>
+        <Button href="/libro" size="lg">
+          <Icon name="book-open" size="sm" />
+          Conoce su Obra Literaria
+        </Button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact CTA -->
+  <section class="py-[var(--space-section-md)] bg-background">
+    <div class="mx-auto max-w-2xl px-6 text-center" data-reveal>
+      <h2 class="font-display text-3xl font-bold text-foreground mb-4">
+        ¿Deseas contactar al Dr. Medina?
+      </h2>
+      <p class="text-lg text-foreground-muted mb-8">
+        Ya sea para consultas médicas, invitaciones académicas, o adquirir su libro.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <Button href="/libro/comprar" size="lg">
+          <Icon name="shopping-cart" size="sm" />
+          Comprar el Libro
+        </Button>
+        <Button variant="outline" href="/contact" size="lg">
+          <Icon name="message-circle" size="sm" />
+          Enviar Mensaje
+        </Button>
+      </div>
+    </div>
+  </section>
+</PageLayout>
+
+<style>
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>

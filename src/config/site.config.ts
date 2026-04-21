@@ -58,47 +58,45 @@ export interface SiteConfig {
 }
 
 const siteConfig: SiteConfig = {
-  name: 'Astro Rocket',
+  name: 'Dr. Pedro Rafael Medina Millan',
   description:
-    'Astro Rocket — A production-ready Astro 6 starter with 12 beautiful themes, 57+ components, built-in i18n, dark mode and a fast, modern foundation to build anything on.',
-  url: SITE_URL || 'https://astrorocket.dev',
+    'Biografía oficial del Dr. Pedro Rafael Medina Millan - Pediatra Puericultor con 60 años de trayectoria. Autor del libro "Los Médicos del Estado Barinas".',
+  url: SITE_URL || 'https://drpedromedina.com',
   ogImage: '/og-default.svg',
-  author: 'Hans Martens',
-  email: 'hello@hansmartens.dev',
+  author: 'Dr. Pedro Rafael Medina Millan',
+  email: 'drpedromedina@centromedico.ficticio',
+  phone: '+58 281 555 1234',
   address: {
-    street: '',
-    city: 'Veghel',
-    state: '',
+    street: 'Av. Bolívar, Centro Comercial "La Fuente", Piso 2, Consultorio 205',
+    city: 'Barcelona',
+    state: 'Anzoátegui',
     zip: '',
-    country: 'the Netherlands',
+    country: 'Venezuela',
   },
   socialLinks: [
-    'https://github.com/hansmartens68/Astro-Rocket',
-    'https://x.com/hansmartens_dev',
-    'https://www.linkedin.com',
-    'https://bsky.app/profile/hansmartens-online.bsky.social',
+    'https://instagram.com/drpedromedinapediatria',
   ],
   twitter: {
-    site: 'https://x.com/hansmartens_dev',
-    creator: '@hansmartens_dev',
+    site: '',
+    creator: '',
   },
   verification: {
     google: GOOGLE_SITE_VERIFICATION,
     bing: BING_SITE_VERIFICATION,
   },
-  authorImage: '/avatar.svg',
+  authorImage: '/images/dr-medina/doctor.jpg',
   blogImageOverlay: true,
   branding: {
     logo: {
-      alt: 'Astro Rocket',
+      alt: 'Dr. Pedro Rafael Medina Millan',
       imageUrl: '/favicon.svg',
     },
     favicon: {
       svg: '/favicon.svg',
     },
     colors: {
-      themeColor: '#3b82f6',
-      backgroundColor: '#ffffff',
+      themeColor: '#1e3a5f',
+      backgroundColor: '#fafafa',
     },
   },
 };

@@ -1,0 +1,519 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import Button from '@/components/ui/form/Button/Button.astro';
+import Badge from '@/components/ui/data-display/Badge/Badge.astro';
+import Card from '@/components/ui/data-display/Card/Card.astro';
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import Input from '@/components/ui/form/Input/Input.astro';
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import bookCover from '@/assets/book/book-cover.jpg';
+
+const [book] = await getCollection('biographyBook');
+const [profile] = await getCollection('biographyProfile');
+
+// Calculate totals
+const basePrice = book.data.price;
+
+// Options for selects
+const stateOptions = [
+  { value: '', label: 'Seleccionar...' },
+  { value: 'anzoategui', label: 'Anzoátegui' },
+  { value: 'barinas', label: 'Barinas' },
+  { value: 'carabobo', label: 'Carabobo' },
+  { value: 'distrito-capital', label: 'Distrito Capital' },
+  { value: 'miranda', label: 'Miranda' },
+  { value: 'monagas', label: 'Monagas' },
+  { value: 'sucre', label: 'Sucre' },
+  { value: 'zulia', label: 'Zulia' },
+  { value: 'otro', label: 'Otro' },
+];
+
+const quantityOptions = [
+  { value: '1', label: '1 libro' },
+  { value: '2', label: '2 libros' },
+  { value: '3', label: '3 libros' },
+  { value: '5', label: '5 libros' },
+  { value: '10', label: '10 libros' },
+];
+
+const coverOptions = book.data.coverOptions.map((option: string) => ({
+  value: option.toLowerCase().replace(' ', '-'),
+  label: option,
+}));
+
+const paymentOptions = [
+  { value: '', label: 'Seleccionar...' },
+  { value: 'transferencia', label: 'Transferencia Bancaria' },
+  { value: 'pago-movil', label: 'Pago Móvil' },
+  { value: 'zelle', label: 'Zelle' },
+  { value: 'binance', label: 'Binance Pay' },
+  { value: 'efectivo', label: 'Efectivo (solo Barcelona)' },
+];
+---
+
+<PageLayout
+  title="Comprar Libro | Formulario de Pedido"
+  description={`Formulario de compra para adquirir "${book.data.title}" por $${book.data.price} ${book.data.currency}. Envío disponible a todo Venezuela.`}
+>
+  <div class="py-12">
+    <div class="mx-auto max-w-6xl px-6">
+      {/* Header */}
+      <div class="text-center mb-12" data-reveal>
+        <Badge variant="brand" pill class="mb-4">Orden de Compra</Badge>
+        <h1 class="font-display text-4xl font-bold text-foreground mb-4">
+          Comprar "{book.data.title}"
+        </h1>
+        <p class="text-lg text-foreground-muted max-w-2xl mx-auto">
+          Completa el formulario con tus datos. Te contactaremos para confirmar tu pedido y coordinar el pago y envío.
+        </p>
+      </div>
+
+      <div class="grid gap-8 lg:grid-cols-3">
+        {/* Form Section */}
+        <div class="lg:col-span-2" data-reveal>
+          <Card variant="elevated" padding="lg">
+            <form id="purchase-form" class="flex flex-col gap-6">
+              {/* Personal Information */}
+              <div>
+                <h3 class="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
+                  <Icon name="user" size="sm" class="text-brand-500" />
+                  Información Personal
+                </h3>
+                <div class="grid gap-4 md:grid-cols-2">
+                  <div class="form-field">
+                    <label for="firstName" class="block text-sm font-medium text-foreground mb-1.5">
+                      Nombre <span class="text-red-500">*</span>
+                    </label>
+                    <Input
+                      type="text"
+                      id="firstName"
+                      name="firstName"
+                      placeholder="Tu nombre"
+                      required
+                      class="w-full"
+                    />
+                    <p class="error-message text-sm text-red-500 mt-1 hidden"></p>
+                  </div>
+
+                  <div class="form-field">
+                    <label for="lastName" class="block text-sm font-medium text-foreground mb-1.5">
+                      Apellido <span class="text-red-500">*</span>
+                    </label>
+                    <Input
+                      type="text"
+                      id="lastName"
+                      name="lastName"
+                      placeholder="Tu apellido"
+                      required
+                      class="w-full"
+                    />
+                    <p class="error-message text-sm text-red-500 mt-1 hidden"></p>
+                  </div>
+                </div>
+
+                <div class="grid gap-4 md:grid-cols-2 mt-4">
+                  <div class="form-field">
+                    <label for="email" class="block text-sm font-medium text-foreground mb-1.5">
+                      Correo Electrónico <span class="text-red-500">*</span>
+                    </label>
+                    <Input
+                      type="email"
+                      id="email"
+                      name="email"
+                      placeholder="tu@email.com"
+                      required
+                      class="w-full"
+                    />
+                    <p class="error-message text-sm text-red-500 mt-1 hidden"></p>
+                  </div>
+
+                  <div class="form-field">
+                    <label for="phone" class="block text-sm font-medium text-foreground mb-1.5">
+                      Teléfono <span class="text-red-500">*</span>
+                    </label>
+                    <Input
+                      type="tel"
+                      id="phone"
+                      name="phone"
+                      placeholder="+58 XXX XXX XXXX"
+                      required
+                      class="w-full"
+                    />
+                    <p class="error-message text-sm text-red-500 mt-1 hidden"></p>
+                  </div>
+                </div>
+              </div>
+
+              <hr class="border-border" />
+
+              {/* Shipping Address */}
+              <div>
+                <h3 class="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
+                  <Icon name="map-pin" size="sm" class="text-brand-500" />
+                  Dirección de Envío
+                </h3>
+                
+                <div class="form-field mb-4">
+                  <label for="address" class="block text-sm font-medium text-foreground mb-1.5">
+                    Dirección Completa <span class="text-red-500">*</span>
+                  </label>
+                  <textarea
+                    id="address"
+                    name="address"
+                    rows="3"
+                    placeholder="Calle, número, casa/apartamento, sector..."
+                    required
+                    class="w-full px-3 py-2 rounded-lg border border-border bg-background text-foreground placeholder:text-foreground-muted focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
+                  ></textarea>
+                  <p class="error-message text-sm text-red-500 mt-1 hidden"></p>
+                </div>
+
+                <div class="grid gap-4 md:grid-cols-3">
+                  <div class="form-field">
+                    <label for="city" class="block text-sm font-medium text-foreground mb-1.5">
+                      Ciudad <span class="text-red-500">*</span>
+                    </label>
+                    <Input
+                      type="text"
+                      id="city"
+                      name="city"
+                      placeholder="Ciudad"
+                      required
+                      class="w-full"
+                    />
+                    <p class="error-message text-sm text-red-500 mt-1 hidden"></p>
+                  </div>
+
+                  <div class="form-field">
+                    <label for="state" class="block text-sm font-medium text-foreground mb-1.5">
+                      Estado <span class="text-red-500">*</span>
+                    </label>
+                    <select
+                      id="state"
+                      name="state"
+                      required
+                      class="w-full px-3 py-2 rounded-lg border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
+                    >
+                      {stateOptions.map((opt) => (
+                        <option value={opt.value}>{opt.label}</option>
+                      ))}
+                    </select>
+                    <p class="error-message text-sm text-red-500 mt-1 hidden"></p>
+                  </div>
+
+                  <div class="form-field">
+                    <label for="zipCode" class="block text-sm font-medium text-foreground mb-1.5">
+                      Código Postal
+                    </label>
+                    <Input
+                      type="text"
+                      id="zipCode"
+                      name="zipCode"
+                      placeholder="Opcional"
+                      class="w-full"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <hr class="border-border" />
+
+              {/* Order Details */}
+              <div>
+                <h3 class="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
+                  <Icon name="shopping-bag" size="sm" class="text-brand-500" />
+                  Detalles del Pedido
+                </h3>
+
+                <div class="grid gap-4 md:grid-cols-2">
+                  <div class="form-field">
+                    <label for="quantity" class="block text-sm font-medium text-foreground mb-1.5">
+                      Cantidad <span class="text-red-500">*</span>
+                    </label>
+                    <select
+                      id="quantity"
+                      name="quantity"
+                      required
+                      class="w-full px-3 py-2 rounded-lg border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
+                    >
+                      {quantityOptions.map((opt) => (
+                        <option value={opt.value}>{opt.label}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div class="form-field">
+                    <label for="coverType" class="block text-sm font-medium text-foreground mb-1.5">
+                      Tipo de Portada <span class="text-red-500">*</span>
+                    </label>
+                    <select
+                      id="coverType"
+                      name="coverType"
+                      required
+                      class="w-full px-3 py-2 rounded-lg border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
+                    >
+                      <option value="">Seleccionar...</option>
+                      {coverOptions.map((opt) => (
+                        <option value={opt.value}>{opt.label}</option>
+                      ))}
+                    </select>
+                    <p class="error-message text-sm text-red-500 mt-1 hidden"></p>
+                  </div>
+                </div>
+
+                <div class="form-field mt-4">
+                  <label for="paymentMethod" class="block text-sm font-medium text-foreground mb-1.5">
+                    Método de Pago Preferido <span class="text-red-500">*</span>
+                  </label>
+                  <select
+                    id="paymentMethod"
+                    name="paymentMethod"
+                    required
+                    class="w-full px-3 py-2 rounded-lg border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
+                  >
+                    {paymentOptions.map((opt) => (
+                      <option value={opt.value}>{opt.label}</option>
+                    ))}
+                  </select>
+                  <p class="error-message text-sm text-red-500 mt-1 hidden"></p>
+                </div>
+
+                <div class="form-field mt-4">
+                  <label for="notes" class="block text-sm font-medium text-foreground mb-1.5">
+                    Notas Adicionales
+                  </label>
+                  <textarea
+                    id="notes"
+                    name="notes"
+                    rows="2"
+                    placeholder="Instrucciones especiales de envío, dedicatoria, etc."
+                    class="w-full px-3 py-2 rounded-lg border border-border bg-background text-foreground placeholder:text-foreground-muted focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
+                  ></textarea>
+                </div>
+              </div>
+
+              {/* Submit Button */}
+              <div class="pt-4">
+                <Button type="submit" size="lg" class="w-full">
+                  <Icon name="send" size="sm" />
+                  Enviar Pedido
+                </Button>
+                <p class="text-sm text-foreground-muted text-center mt-3">
+                  Te contactaremos en menos de 24 horas para confirmar tu pedido.
+                </p>
+              </div>
+            </form>
+          </Card>
+        </div>
+
+        {/* Order Summary */}
+        <div data-reveal data-reveal-delay="1">
+          <Card variant="elevated" padding="lg" class="sticky top-24">
+            <h3 class="text-lg font-semibold text-foreground mb-4">Resumen del Pedido</h3>
+            
+            {/* Book Preview */}
+            <div class="flex gap-4 mb-6">
+              <div class="w-24 h-32 shrink-0">
+                <Image
+                  src={bookCover}
+                  alt={book.data.title}
+                  class="w-full h-full object-cover rounded-lg shadow-md"
+                  width={96}
+                  height={128}
+                />
+              </div>
+              <div>
+                <h4 class="font-semibold text-foreground text-sm">{book.data.title}</h4>
+                <p class="text-xs text-foreground-muted">{book.data.author}</p>
+                <p class="text-xs text-foreground-muted mt-1">{book.data.pages} páginas</p>
+              </div>
+            </div>
+
+            {/* Price Breakdown */}
+            <div class="space-y-2 mb-6">
+              <div class="flex justify-between text-sm">
+                <span class="text-foreground-muted">Precio unitario</span>
+                <span class="text-foreground">${basePrice} {book.data.currency}</span>
+              </div>
+              <div class="flex justify-between text-sm">
+                <span class="text-foreground-muted">Cantidad</span>
+                <span class="text-foreground" id="summary-quantity">1</span>
+              </div>
+              <div class="flex justify-between text-sm">
+                <span class="text-foreground-muted">Envío</span>
+                <span class="text-green-500">Por calcular</span>
+              </div>
+              <hr class="border-border" />
+              <div class="flex justify-between text-lg font-semibold">
+                <span class="text-foreground">Total estimado</span>
+                <span class="text-brand-500" id="summary-total">${basePrice} {book.data.currency}</span>
+              </div>
+            </div>
+
+            {/* Contact Info */}
+            <div class="bg-background-secondary rounded-lg p-4 text-sm">
+              <p class="font-medium text-foreground mb-2">¿Tienes preguntas?</p>
+              <p class="text-foreground-muted mb-3">
+                Contáctanos directamente para cualquier consulta sobre tu pedido.
+              </p>
+              <div class="space-y-1">
+                <a href={`tel:${profile.data.social.phone}`} class="flex items-center gap-2 text-brand-500 hover:underline">
+                  <Icon name="phone" size="sm" />
+                  {profile.data.social.phone}
+                </a>
+                <a href={`mailto:${profile.data.social.email}`} class="flex items-center gap-2 text-brand-500 hover:underline">
+                  <Icon name="mail" size="sm" />
+                  {profile.data.social.email}
+                </a>
+              </div>
+            </div>
+          </Card>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {/* Success Modal */}
+  <div id="success-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 p-4">
+    <Card variant="elevated" padding="lg" class="max-w-md w-full text-center">
+      <div class="w-16 h-16 rounded-full bg-green-500/10 flex items-center justify-center mx-auto mb-4">
+        <Icon name="check" size="lg" class="text-green-500" />
+      </div>
+      <h3 class="text-xl font-semibold text-foreground mb-2">¡Pedido Recibido!</h3>
+      <p class="text-foreground-muted mb-6">
+        Hemos recibido tu pedido correctamente. Te contactaremos en menos de 24 horas para confirmar los detalles de pago y envío.
+      </p>
+      <Button href="/" class="w-full">
+        Volver al Inicio
+      </Button>
+    </Card>
+  </div>
+
+  <script>
+    import { z } from 'zod';
+
+    // Define validation schema
+    const purchaseSchema = z.object({
+      firstName: z.string().min(2, 'El nombre debe tener al menos 2 caracteres'),
+      lastName: z.string().min(2, 'El apellido debe tener al menos 2 caracteres'),
+      email: z.string().email('Ingresa un correo electrónico válido'),
+      phone: z.string().min(10, 'Ingresa un número de teléfono válido'),
+      address: z.string().min(10, 'Ingresa una dirección completa'),
+      city: z.string().min(2, 'Ingresa la ciudad'),
+      state: z.string().min(1, 'Selecciona el estado'),
+      quantity: z.string().min(1, 'Selecciona la cantidad'),
+      coverType: z.string().min(1, 'Selecciona el tipo de portada'),
+      paymentMethod: z.string().min(1, 'Selecciona el método de pago'),
+    });
+
+    const form = document.getElementById('purchase-form') as HTMLFormElement;
+    const quantitySelect = document.getElementById('quantity') as HTMLSelectElement;
+    const summaryQuantity = document.getElementById('summary-quantity');
+    const summaryTotal = document.getElementById('summary-total');
+    const successModal = document.getElementById('success-modal');
+
+    const basePrice = 35;
+
+    // Update summary when quantity changes
+    quantitySelect?.addEventListener('change', () => {
+      const quantity = parseInt(quantitySelect.value) || 1;
+      const total = basePrice * quantity;
+      
+      if (summaryQuantity) summaryQuantity.textContent = quantity.toString();
+      if (summaryTotal) summaryTotal.textContent = `$${total} USD`;
+    });
+
+    // Form submission
+    form?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      // Clear previous errors
+      document.querySelectorAll('.error-message').forEach(el => {
+        el.classList.add('hidden');
+        el.textContent = '';
+      });
+      document.querySelectorAll('.border-red-500').forEach(el => {
+        el.classList.remove('border-red-500');
+      });
+
+      // Get form data
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData.entries());
+
+      try {
+        // Validate with Zod
+        const validatedData = purchaseSchema.parse(data);
+
+        // Calculate total
+        const quantity = parseInt(validatedData.quantity);
+        const total = basePrice * quantity;
+
+        // Log to console (as requested - no API connection yet)
+        console.log('========== NUEVO PEDIDO ==========');
+        console.log('Fecha:', new Date().toLocaleString('es-VE'));
+        console.log('-----------------------------------');
+        console.log('CLIENTE:');
+        console.log('  Nombre:', validatedData.firstName, validatedData.lastName);
+        console.log('  Email:', validatedData.email);
+        console.log('  Teléfono:', validatedData.phone);
+        console.log('-----------------------------------');
+        console.log('DIRECCIÓN DE ENVÍO:');
+        console.log('  Dirección:', validatedData.address);
+        console.log('  Ciudad:', validatedData.city);
+        console.log('  Estado:', validatedData.state);
+        console.log('  Código Postal:', data.zipCode || 'No proporcionado');
+        console.log('-----------------------------------');
+        console.log('PEDIDO:');
+        console.log('  Libro: Los Médicos del Estado Barinas');
+        console.log('  Cantidad:', quantity);
+        console.log('  Tipo de portada:', validatedData.coverType);
+        console.log('  Método de pago:', validatedData.paymentMethod);
+        console.log('  Total: $' + total + ' USD');
+        console.log('-----------------------------------');
+        console.log('NOTAS:', data.notes || 'Sin notas adicionales');
+        console.log('===================================');
+
+        // Show success modal
+        if (successModal) {
+          successModal.classList.remove('hidden');
+          successModal.classList.add('flex');
+        }
+
+        // Reset form
+        form.reset();
+        if (summaryQuantity) summaryQuantity.textContent = '1';
+        if (summaryTotal) summaryTotal.textContent = `$${basePrice} USD`;
+
+      } catch (error: any) {
+        // Check if it's a Zod validation error
+        if (error && error.errors && Array.isArray(error.errors)) {
+          // Display validation errors
+          error.errors.forEach((err: any) => {
+            const fieldName = err.path[0] as string;
+            const field = document.getElementById(fieldName);
+            const errorEl = field?.closest('.form-field')?.querySelector('.error-message');
+            
+            if (errorEl) {
+              errorEl.textContent = err.message;
+              errorEl.classList.remove('hidden');
+            }
+            if (field) {
+              field.classList.add('border-red-500');
+            }
+          });
+        } else {
+          console.error('Validation error:', error);
+        }
+      }
+    });
+
+    // Close modal on outside click
+    successModal?.addEventListener('click', (e) => {
+      if (e.target === successModal) {
+        successModal.classList.add('hidden');
+        successModal.classList.remove('flex');
+      }
+    });
+  </script>
+</PageLayout>

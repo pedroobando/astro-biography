@@ -1,0 +1,304 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import { Hero } from '@/components/hero';
+import Button from '@/components/ui/form/Button/Button.astro';
+import Badge from '@/components/ui/data-display/Badge/Badge.astro';
+import Card from '@/components/ui/data-display/Card/Card.astro';
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import { getCollection, render } from 'astro:content';
+import { Image } from 'astro:assets';
+import bookCover from '@/assets/book/book-cover.jpg';
+
+const [book] = await getCollection('biographyBook');
+const { Content } = await render(book);
+const [profile] = await getCollection('biographyProfile');
+---
+
+<PageLayout
+  title={`${book.data.title} | El Libro`}
+  description={`${book.data.subtitle}. Precio: $${book.data.price} ${book.data.currency}. ${book.data.description}`}
+  showScrollProgress={true}
+>
+  {/* Hero Section */}
+  <Hero layout="split" size="xl">
+    <div slot="left" class="flex flex-col gap-6">
+      <Badge variant="brand" pill class="w-fit">{book.data.status}</Badge>
+      
+      <h1 class="font-display text-4xl md:text-5xl font-bold text-foreground leading-tight">
+        {book.data.title}
+      </h1>
+      
+      <p class="text-xl text-brand-500 font-medium">
+        Por {book.data.author}
+      </p>
+      
+      <p class="text-lg text-foreground-muted leading-relaxed">
+        {book.data.description}
+      </p>
+
+      <div class="flex flex-wrap gap-4 items-center">
+        <span class="text-4xl font-bold text-brand-500">${book.data.price}</span>
+        <span class="text-foreground-muted">{book.data.currency}</span>
+        <span class="text-foreground-muted">|</span>
+        <span class="text-foreground-muted">{book.data.pages} páginas</span>
+      </div>
+
+      <div class="flex flex-col sm:flex-row gap-4 mt-2">
+        <Button size="lg" href="/libro/comprar">
+          <Icon name="shopping-cart" size="sm" />
+          Comprar Ahora
+        </Button>
+        <Button size="lg" variant="outline" href="#contenido">
+          <Icon name="book-open" size="sm" />
+          Ver Contenido
+        </Button>
+      </div>
+
+      <div class="flex flex-wrap gap-2 mt-2">
+        {book.data.coverOptions.map((option) => (
+          <Badge variant="outline" size="sm">{option}</Badge>
+        ))}
+      </div>
+    </div>
+
+    <div slot="right" class="relative">
+      <div class="relative aspect-[3/4] max-w-md mx-auto">
+        <div class="absolute inset-0 bg-gradient-to-br from-brand-500/20 to-brand-500/5 rounded-2xl transform rotate-3"></div>
+        <Image
+          src={bookCover}
+          alt={`Portada de ${book.data.title}`}
+          class="relative rounded-2xl shadow-2xl w-full h-full object-cover"
+          width={400}
+          height={600}
+        />
+      </div>
+    </div>
+  </Hero>
+
+  {/* Book Details */}
+  <section class="py-16 bg-background-secondary border-y border-border">
+    <div class="mx-auto max-w-6xl px-6">
+      <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+        <Card variant="elevated" padding="lg" class="text-center">
+          <Icon name="book" class="w-8 h-8 text-brand-500 mx-auto mb-3" />
+          <p class="text-sm text-foreground-muted mb-1">Páginas</p>
+          <p class="text-lg font-semibold text-foreground">{book.data.pages}</p>
+        </Card>
+
+        <Card variant="elevated" padding="lg" class="text-center">
+          <Icon name="calendar" class="w-8 h-8 text-brand-500 mx-auto mb-3" />
+          <p class="text-sm text-foreground-muted mb-1">Año</p>
+          <p class="text-lg font-semibold text-foreground">{book.data.publishedYear}</p>
+        </Card>
+
+        <Card variant="elevated" padding="lg" class="text-center">
+          <Icon name="globe" class="w-8 h-8 text-brand-500 mx-auto mb-3" />
+          <p class="text-sm text-foreground-muted mb-1">Idioma</p>
+          <p class="text-lg font-semibold text-foreground">{book.data.language}</p>
+        </Card>
+
+        <Card variant="elevated" padding="lg" class="text-center">
+          <Icon name="building" class="w-8 h-8 text-brand-500 mx-auto mb-3" />
+          <p class="text-sm text-foreground-muted mb-1">Editorial</p>
+          <p class="text-lg font-semibold text-foreground">{book.data.publisher}</p>
+        </Card>
+      </div>
+    </div>
+  </section>
+
+  {/* Content Preview */}
+  <section id="contenido" class="py-[var(--space-section-md)] bg-background">
+    <div class="mx-auto max-w-4xl px-6">
+      <div class="text-center mb-12" data-reveal>
+        <Badge variant="brand" pill class="mb-4">Contenido</Badge>
+        <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground">
+          Dentro del Libro
+        </h2>
+      </div>
+
+      <div class="prose prose-lg dark:prose-invert max-w-none" data-reveal>
+        <Content />
+      </div>
+    </div>
+  </section>
+
+  {/* Why Buy Section */}
+  <section class="py-[var(--space-section-md)] bg-brand-500/5 dark:bg-background-secondary">
+    <div class="mx-auto max-w-6xl px-6">
+      <div class="text-center mb-12" data-reveal>
+        <Badge variant="brand" pill class="mb-4">¿Por qué comprar este libro?</Badge>
+        <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground">
+          Valor Histórico y Cultural
+        </h2>
+      </div>
+
+      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3" data-reveal data-reveal-delay="1">
+        <Card hover padding="lg">
+          <div class="flex flex-col items-center text-center gap-4">
+            <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500">
+              <Icon name="history" size="lg" />
+            </div>
+            <h3 class="text-lg font-semibold text-foreground">Historia Documentada</h3>
+            <p class="text-sm text-foreground-muted">
+              Historias de médicos desde el siglo XIX hasta la actualidad, preservadas para las futuras generaciones.
+            </p>
+          </div>
+        </Card>
+
+        <Card hover padding="lg">
+          <div class="flex flex-col items-center text-center gap-4">
+            <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500">
+              <Icon name="graduation-cap" size="lg" />
+            </div>
+            <h3 class="text-lg font-semibold text-foreground">Valor Educativo</h3>
+            <p class="text-sm text-foreground-muted">
+              Ideal para estudiantes de medicina, historiadores y cualquier persona interesada en la historia de Venezuela.
+            </p>
+          </div>
+        </Card>
+
+        <Card hover padding="lg">
+          <div class="flex flex-col items-center text-center gap-4">
+            <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500">
+              <Icon name="award" size="lg" />
+            </div>
+            <h3 class="text-lg font-semibold text-foreground">Autoridad en el Tema</h3>
+            <p class="text-sm text-foreground-muted">
+              Escrito por un médico con {profile.data.careerStats.yearsOfService} años de trayectoria y profundo conocimiento de la medicina venezolana.
+            </p>
+          </div>
+        </Card>
+
+        <Card hover padding="lg">
+          <div class="flex flex-col items-center text-center gap-4">
+            <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500">
+              <Icon name="users" size="lg" />
+            </div>
+            <h3 class="text-lg font-semibold text-foreground">Legado Familiar</h3>
+            <p class="text-sm text-foreground-muted">
+              Un libro que puede ser heredado de generación en generación, preservando la memoria colectiva.
+            </p>
+          </div>
+        </Card>
+
+        <Card hover padding="lg">
+          <div class="flex flex-col items-center text-center gap-4">
+            <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500">
+              <Icon name="book-open" size="lg" />
+            </div>
+            <h3 class="text-lg font-semibold text-foreground">Formato de Colección</h3>
+            <p class="text-sm text-foreground-muted">
+              Disponible en tapa dura o blanda. Una pieza de colección para bibliotecas personales e institucionales.
+            </p>
+          </div>
+        </Card>
+
+        <Card hover padding="lg">
+          <div class="flex flex-col items-center text-center gap-4">
+            <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500">
+              <Icon name="heart" size="lg" />
+            </div>
+            <h3 class="text-lg font-semibold text-foreground">Apoyo a la Cultura</h3>
+            <p class="text-sm text-foreground-muted">
+              Cada compra apoya la investigación histórica y la preservación de la memoria médica de Venezuela.
+            </p>
+          </div>
+        </Card>
+      </div>
+    </div>
+  </section>
+
+  {/* Testimonials */}
+  <section class="py-[var(--space-section-md)] bg-background">
+    <div class="mx-auto max-w-6xl px-6">
+      <div class="text-center mb-12" data-reveal>
+        <Badge variant="brand" pill class="mb-4">Testimonios</Badge>
+        <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground">
+          Lo que dicen del autor
+        </h2>
+      </div>
+
+      <div class="grid gap-6 md:grid-cols-2" data-reveal data-reveal-delay="1">
+        <Card variant="elevated" padding="lg">
+          <div class="flex flex-col h-full gap-4">
+            <div class="flex gap-1 text-brand-500" role="img" aria-label="5 de 5 estrellas">
+              {[...Array(5)].map(() => (
+                <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20" aria-hidden="true">
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                </svg>
+              ))}
+            </div>
+            <blockquote class="flex-1 text-foreground-muted leading-relaxed">
+              "El Dr. Medina no solo ha sido un excelente pediatra, sino también un maestro que ha formado a generaciones de médicos. Su libro es un tesoro para la medicina venezolana."
+            </blockquote>
+            <div class="flex items-center gap-3 pt-4 border-t border-border">
+              <div class="w-10 h-10 rounded-full bg-gradient-to-br from-brand-500/30 to-brand-500/10 flex items-center justify-center text-brand-500 font-bold text-sm">
+                R
+              </div>
+              <div>
+                <p class="text-sm font-semibold text-foreground">Dra. Rosa María Medina</p>
+                <p class="text-xs text-foreground-muted">Hija y colega pediatra</p>
+              </div>
+            </div>
+          </div>
+        </Card>
+
+        <Card variant="elevated" padding="lg">
+          <div class="flex flex-col h-full gap-4">
+            <div class="flex gap-1 text-brand-500" role="img" aria-label="5 de 5 estrellas">
+              {[...Array(5)].map(() => (
+                <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20" aria-hidden="true">
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                </svg>
+              ))}
+            </div>
+            <blockquote class="flex-1 text-foreground-muted leading-relaxed">
+              "Haber sido residente del Dr. Medina fue un privilegio. Su dedicación, conocimiento y humanismo son ejemplos que llevo conmigo cada día en mi práctica médica."
+            </blockquote>
+            <div class="flex items-center gap-3 pt-4 border-t border-border">
+              <div class="w-10 h-10 rounded-full bg-gradient-to-br from-brand-500/30 to-brand-500/10 flex items-center justify-center text-brand-500 font-bold text-sm">
+                A
+              </div>
+              <div>
+                <p class="text-sm font-semibold text-foreground">Dr. Antonio González</p>
+                <p class="text-xs text-foreground-muted">Ex-residente y pediatra</p>
+              </div>
+            </div>
+          </div>
+        </Card>
+      </div>
+    </div>
+  </section>
+
+  {/* CTA Section */}
+  <section class="py-[var(--space-section-md)] bg-brand-500">
+    <div class="mx-auto max-w-4xl px-6 text-center">
+      <h2 class="font-display text-3xl md:text-4xl font-bold text-white mb-4">
+        Adquiere tu ejemplar hoy
+      </h2>
+      <p class="text-lg text-white/80 mb-8 max-w-2xl mx-auto">
+        Forma parte de la preservación de la historia médica de Venezuela. 
+        Un libro que enriquecerá tu biblioteca y tu conocimiento.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <Button 
+          size="lg" 
+          href="/libro/comprar"
+          class="bg-white text-brand-500 hover:bg-white/90"
+        >
+          <Icon name="shopping-cart" size="sm" />
+          Comprar Ahora - ${book.data.price} {book.data.currency}
+        </Button>
+        <Button 
+          size="lg" 
+          variant="outline" 
+          href="/contact"
+          class="border-white text-white hover:bg-white/10"
+        >
+          <Icon name="message-circle" size="sm" />
+          Hacer una Consulta
+        </Button>
+      </div>
+    </div>
+  </section>
+</PageLayout>

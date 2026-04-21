@@ -5,14 +5,13 @@ import Button from '@/components/ui/form/Button/Button.astro';
 import Badge from '@/components/ui/data-display/Badge/Badge.astro';
 import Card from '@/components/ui/data-display/Card/Card.astro';
 import Icon from '@/components/ui/primitives/Icon/Icon.astro';
-import BlogCard from '@/components/blog/BlogCard.astro';
 import { getCollection } from 'astro:content';
 import siteConfig from '@/config/site.config';
+import { Image } from 'astro:assets';
+import bookCover from '@/assets/book/book-cover.jpg';
 
-const projectItems = await getCollection('projects');
-const featuredProjects = projectItems
-  .sort((a, b) => a.data.order - b.data.order)
-  .slice(0, 4);
+const [profile] = await getCollection('biographyProfile');
+const [book] = await getCollection('biographyBook');
 
 const posts = (await getCollection('blog', ({ data }) => !data.draft))
   .sort((a, b) => {
@@ -23,145 +22,139 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
 ---
 
 <LandingLayout
-  title="Astro Rocket — Astro 6 starter theme"
-  description="A production-ready Astro 6 starter with 12 beautiful themes, 57+ components, built-in i18n, dark mode and a fast, modern foundation to build anything on."
+  title={`${siteConfig.name} - Pediatra Puericultor | 60 años de trayectoria`}
+  description={`Biografía oficial del Dr. Pedro Rafael Medina Millan - ${profile.data.careerStats.yearsOfService} años de trayectoria, ${profile.data.careerStats.childrenAttended.toLocaleString()} niños atendidos. Autor de "${book.data.title}".`}
   image="/og-default.svg"
   includePersonSchema={true}
   includeProfessionalServiceSchema={true}
 >
-  <!-- Hero -->
-  <Hero layout="centered" size="xl" class="hero-dark-gradient" showScrollIndicator descriptionClass="max-w-3xl">
-    <Badge slot="badge" variant="brand" pill pulse class="dark:text-brand-200">Available for new projects</Badge>
+  <!-- Hero Section - Book Focus -->
+  <Hero layout="split" size="xl" class="bg-gradient-to-br from-background via-background-secondary to-background">
+    <div slot="left" class="flex flex-col gap-6">
+      <Badge variant="brand" pill class="w-fit">Nuevo Lanzamiento</Badge>
+      
+      <h1 class="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight">
+        <span class="text-foreground">Los Médicos del</span><br />
+        <span class="text-brand-500">Estado Barinas</span>
+      </h1>
 
-    <h1 slot="title">
-      <span class="text-foreground [-webkit-text-fill-color:currentColor]">Astro Rocket —</span><br />
-      <span class="text-brand-500 [-webkit-text-fill-color:var(--color-brand-500)] dark:text-foreground dark:[-webkit-text-fill-color:currentColor]">Web Designer</span><span class="text-foreground [-webkit-text-fill-color:currentColor]"> &amp; Developer</span>
-    </h1>
+      <p class="text-lg text-foreground-muted max-w-xl leading-relaxed">
+        Descubre la historia de los médicos que forjaron la medicina en Barinas. 
+        Una obra del <strong>Dr. Pedro Rafael Medina Millan</strong> que preserva el legado 
+        de quienes dedicaron sus vidas a la salud del pueblo llanero.
+      </p>
 
-    <p slot="description">
-      A production-ready Astro 6 starter with 12 beautiful themes, 57+ components, built-in i18n, dark mode and a fast, modern foundation to build anything on.
-    </p>
+      <div class="flex flex-wrap gap-4 items-center">
+        <span class="text-3xl font-bold text-brand-500">$35 USD</span>
+        <span class="text-foreground-muted">·</span>
+        <span class="text-foreground-muted">{book.data.pages} páginas</span>
+        <span class="text-foreground-muted">·</span>
+        <span class="text-foreground-muted">{book.data.coverOptions.join(' o ')}</span>
+      </div>
 
-   <Fragment slot="actions">
-      <Button size="lg" href="https://github.com/hansmartens68/Astro-Rocket">
-        Get it on GitHub
-        <Icon name="arrow-right" size="sm" />
-      </Button>
-      <Button size="lg" variant="outline" href="/blog/astro-rocket-getting-started">
-        <Icon name="rocket" size="sm" />
-        Get started
-        <Icon name="arrow-right" size="sm" />
-      </Button>
-    </Fragment>
+      <div class="flex flex-col sm:flex-row gap-4 mt-2">
+        <Button size="lg" href="/libro/comprar">
+          <Icon name="shopping-cart" size="sm" />
+          Comprar Ahora
+        </Button>
+        <Button size="lg" variant="outline" href="/libro">
+          <Icon name="book-open" size="sm" />
+          Conocer el Libro
+        </Button>
+      </div>
+
+      <p class="text-sm text-foreground-muted">
+        <Icon name="truck" size="sm" class="inline mr-1" />
+        Envío disponible a todo Venezuela
+      </p>
+    </div>
+
+    <div slot="right" class="relative">
+      <div class="relative aspect-[3/4] max-w-md mx-auto">
+        <div class="absolute inset-0 bg-gradient-to-br from-brand-500/20 to-brand-500/5 rounded-2xl transform rotate-3"></div>
+        <Image
+          src={bookCover}
+          alt={`Portada del libro ${book.data.title}`}
+          class="relative rounded-2xl shadow-2xl w-full h-full object-cover"
+          width={400}
+          height={600}
+        />
+        <div class="absolute -bottom-4 -right-4 bg-brand-500 text-white rounded-full w-24 h-24 flex flex-col items-center justify-center shadow-lg">
+          <span class="text-2xl font-bold">$35</span>
+          <span class="text-xs">USD</span>
+        </div>
+      </div>
+    </div>
   </Hero>
 
-  <!-- Services Section -->
-  <section class="relative z-10 py-[var(--space-section-md)] bg-background-secondary border-t border-border">
-    <div class="mx-auto max-w-6xl px-6 flex flex-col gap-8">
-      <div class="flex flex-col items-center gap-4 text-center" data-reveal>
-        <div class="flex flex-col items-center gap-6">
-          <Badge variant="brand" pill>Services</Badge>
-          <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground">
-            What I do
-          </h2>
-        </div>
-        <p class="text-lg text-foreground-muted max-w-2xl mx-auto">
-          From concept to launch.
-        </p>
-      </div>
-
-      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3" data-reveal data-reveal-delay="1">
-        <!-- Web Design -->
-        <Card hover>
-          <div class="flex items-start gap-4">
-            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500 shrink-0">
-              <Icon name="layout" size="sm" />
-            </div>
-            <div class="flex-1 min-w-0">
-              <h3 class="text-base font-semibold text-foreground">Web Design</h3>
-              <p class="text-sm text-foreground-muted leading-relaxed mt-1.5">
-                Clean, modern interfaces that look great on every screen. Focused on clarity, usability, and your brand identity.
-              </p>
-            </div>
-          </div>
-        </Card>
-
-        <!-- Web Development -->
-        <Card hover>
-          <div class="flex items-start gap-4">
-            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500 shrink-0">
-              <Icon name="code" size="sm" />
-            </div>
-            <div class="flex-1 min-w-0">
-              <h3 class="text-base font-semibold text-foreground">Web Development</h3>
-              <p class="text-sm text-foreground-muted leading-relaxed mt-1.5">
-                Fast, accessible websites built with modern tooling. Astro, Tailwind, and best-practice architecture from day one.
-              </p>
-            </div>
-          </div>
-        </Card>
-
-        <!-- Performance -->
-        <Card hover>
-          <div class="flex items-start gap-4">
-            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500 shrink-0">
-              <Icon name="zap" size="sm" />
-            </div>
-            <div class="flex-1 min-w-0">
-              <h3 class="text-base font-semibold text-foreground">Performance Optimization</h3>
-              <p class="text-sm text-foreground-muted leading-relaxed mt-1.5">
-                Core Web Vitals, SEO, and page speed — built in from the start, not bolted on at the end.
-              </p>
-            </div>
-          </div>
-        </Card>
-      </div>
-    </div>
-  </section>
-
- <!-- About Teaser -->
-  <section class="relative z-10 py-[var(--space-section-md)] bg-background border-t border-border">
+  <!-- Stats Section -->
+  <section class="relative z-10 py-16 bg-brand-500/5 dark:bg-background-secondary border-y border-border">
     <div class="mx-auto max-w-6xl px-6">
-      <div class="grid gap-12 lg:grid-cols-2">
-        <div class="flex flex-col justify-center" data-reveal>
-          <div class="flex flex-col gap-6 mb-6">
-            <Badge variant="brand" pill class="self-start">About me</Badge>
-            <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground">
-              Designer, developer,<br />
-              <span class="text-brand-500">and blogger.</span>
-            </h2>
-          </div>
-          <p class="text-lg text-foreground-muted leading-relaxed mb-4">
-           Sixteen years of hands-on experience{siteConfig.address?.city ? `, based in ${siteConfig.address.city}` : ''} and available for clients worldwide. I build with Astro because it aligns with how I think about the web: lean, purposeful, and built to last.
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+        <div class="flex flex-col items-center gap-2">
+          <span class="text-4xl font-bold text-brand-500" data-countup="87">0</span>
+          <span class="text-sm text-foreground-muted">Años de vida</span>
+        </div>
+        <div class="flex flex-col items-center gap-2">
+          <span class="text-4xl font-bold text-brand-500" data-countup="60">0</span>
+          <span class="text-sm text-foreground-muted">Años de trayectoria</span>
+        </div>
+        <div class="flex flex-col items-center gap-2">
+          <span class="text-4xl font-bold text-brand-500" data-countup="35000">0</span>
+          <span class="text-sm text-foreground-muted">Niños atendidos</span>
+        </div>
+        <div class="flex flex-col items-center gap-2">
+          <span class="text-4xl font-bold text-brand-500" data-countup="240">0</span>
+          <span class="text-sm text-foreground-muted">Pediatras formados</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section class="relative z-10 py-[var(--space-section-md)] bg-background">
+    <div class="mx-auto max-w-6xl px-6">
+      <div class="grid gap-12 lg:grid-cols-2 items-center">
+        <div class="flex flex-col gap-6" data-reveal>
+          <Badge variant="brand" pill class="w-fit">Sobre el Autor</Badge>
+          <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground">
+            Dr. Pedro Rafael<br />
+            <span class="text-brand-500">Medina Millan</span>
+          </h2>
+          <p class="text-lg text-foreground-muted leading-relaxed">
+            Pediatra Puericultor con {profile.data.careerStats.yearsOfService} años de trayectoria. 
+            Creador de la primera UCIN en la región centro-oriental de Venezuela, 
+            ex-Coordinador Nacional de Neonatología, y formador de más de 240 pediatras.
           </p>
-          <p class="text-lg text-foreground-muted leading-relaxed mb-8">
-           On the blog, I share the ideas and decisions that shape my work.
+          <p class="text-foreground-muted leading-relaxed">
+            Nacido en Barcelona, Estado Anzoátegui, el 15 de noviembre de 1939. 
+            Graduado de la UCV en 1976, dedicó su vida a la salud de los niños venezolanos.
           </p>
-           <Button variant="outline" href="/about" class="self-start">
-            More about me
-          </Button>
+          <div class="flex flex-col sm:flex-row gap-4">
+            <Button variant="outline" href="/sobre-mi">
+              Ver Biografía Completa
+              <Icon name="arrow-right" size="sm" />
+            </Button>
+          </div>
         </div>
-        <Card variant="elevated" padding="lg" class="h-full flex flex-col" data-reveal data-reveal-delay="1">
-          <p class="text-sm text-foreground mb-5 text-center">A few things about me.</p>
-          <div class="grid grid-cols-2 gap-3 flex-1 auto-rows-fr">
-            <div class="bg-background-tertiary rounded-xl p-5 flex flex-col items-center justify-center text-center gap-2 border-t-2 border-brand-500/40 transition-all duration-200 hover:-translate-y-1 hover:shadow-md hover:border-brand-500 cursor-default h-full">
-              <Icon name="history" class="w-10 h-10 text-brand-500" />
-              <p class="text-sm font-semibold text-foreground">16 Years Experience</p>
+
+        <Card variant="elevated" padding="lg" class="h-full" data-reveal data-reveal-delay="1">
+          <div class="grid grid-cols-2 gap-4">
+            <div class="bg-background-tertiary rounded-xl p-5 flex flex-col items-center justify-center text-center gap-2 border-t-2 border-brand-500/40">
+              <Icon name="graduation-cap" class="w-10 h-10 text-brand-500" />
+              <p class="text-sm font-semibold text-foreground">UCV 1976</p>
             </div>
-            <a href="https://astro.build" target="_blank" rel="noopener noreferrer" class="bg-background-tertiary rounded-xl p-5 flex flex-col items-center justify-center text-center gap-2 border-t-2 border-brand-500/40 transition-all duration-200 hover:-translate-y-1 hover:shadow-md hover:border-brand-500 h-full">
-              <svg class="w-10 h-10 text-brand-500" viewBox="0 0 1280 1280" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M815.039 94.6439C824.758 106.709 829.714 122.99 839.626 155.553L1056.17 866.901C976.107 825.368 889.072 795.413 797.281 779.252L656.29 302.798C653.983 295.002 646.822 289.654 638.693 289.654C630.542 289.654 623.368 295.03 621.08 302.853L481.795 779.011C389.579 795.1 302.146 825.109 221.741 866.793L439.347 155.388L439.348 155.388C449.291 122.882 454.262 106.629 463.982 94.5853C472.562 83.9531 483.723 75.6958 496.4 70.6002C510.76 64.8284 527.756 64.8284 561.749 64.8284H717.174C751.212 64.8284 768.23 64.8284 782.603 70.6123C795.292 75.7184 806.459 83.9923 815.039 94.6439Z" fill="currentColor"/>
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M840.951 900.754C805.253 931.279 734.002 952.097 651.929 952.097C551.197 952.097 466.767 920.737 444.363 878.561C436.354 902.732 434.558 930.396 434.558 948.068C434.558 948.068 429.281 1034.84 489.636 1095.2C489.636 1063.86 515.042 1038.46 546.381 1038.46C600.097 1038.46 600.036 1085.32 599.987 1123.34C599.986 1124.48 599.984 1125.61 599.984 1126.73C599.984 1184.44 635.255 1233.91 685.416 1254.77C677.924 1239.36 673.721 1222.05 673.721 1203.77C673.721 1148.73 706.034 1128.23 743.588 1104.41L743.588 1104.41C773.469 1085.46 806.668 1064.41 829.548 1022.17C841.486 1000.13 848.265 974.893 848.265 948.068C848.265 931.573 845.702 915.676 840.951 900.754Z" fill="currentColor"/>
-              </svg>
-              <p class="text-sm font-semibold text-foreground">Building with Astro</p>
-            </a>
-            <div class="bg-background-tertiary rounded-xl p-5 flex flex-col items-center justify-center text-center gap-2 border-t-2 border-brand-500/40 transition-all duration-200 hover:-translate-y-1 hover:shadow-md hover:border-brand-500 cursor-default h-full">
-              <Icon name="globe" class="w-10 h-10 text-brand-500" />
-              <p class="text-sm font-semibold text-foreground">Working worldwide</p>
+            <div class="bg-background-tertiary rounded-xl p-5 flex flex-col items-center justify-center text-center gap-2 border-t-2 border-brand-500/40">
+              <Icon name="hospital" class="w-10 h-10 text-brand-500" />
+              <p class="text-sm font-semibold text-foreground">Hospital Razetti</p>
             </div>
-            <div class="bg-background-tertiary rounded-xl p-5 flex flex-col items-center justify-center text-center gap-2 border-t-2 border-brand-500/40 transition-all duration-200 hover:-translate-y-1 hover:shadow-md hover:border-brand-500 cursor-default h-full">
-              <Icon name="map-pin" class="w-10 h-10 text-brand-500" />
-              <p class="text-sm font-semibold text-foreground">Based in <br class="sm:hidden" />{siteConfig.address?.city ?? 'Your City'}{siteConfig.address?.country ? `, ${siteConfig.address.country}` : ''}</p>
+            <div class="bg-background-tertiary rounded-xl p-5 flex flex-col items-center justify-center text-center gap-2 border-t-2 border-brand-500/40">
+              <Icon name="award" class="w-10 h-10 text-brand-500" />
+              <p class="text-sm font-semibold text-foreground">Cruz del Congreso</p>
+            </div>
+            <div class="bg-background-tertiary rounded-xl p-5 flex flex-col items-center justify-center text-center gap-2 border-t-2 border-brand-500/40">
+              <Icon name="users" class="w-10 h-10 text-brand-500" />
+              <p class="text-sm font-semibold text-foreground">240+ Pediatras</p>
             </div>
           </div>
         </Card>
@@ -169,209 +162,173 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
     </div>
   </section>
 
-  <!-- Portfolio -->
-  <section id="work" class="relative z-10 py-[var(--space-section-md)] bg-background-secondary border-t border-border">
-    <div class="mx-auto max-w-6xl px-6 flex flex-col gap-8">
-      <div class="flex flex-col items-center gap-4 text-center" data-reveal>
-        <div class="flex flex-col items-center gap-6">
-          <Badge variant="brand" pill>Selected work</Badge>
-          <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground">
-            Projects I've built
-          </h2>
-        </div>
-        <p class="text-lg text-foreground-muted max-w-2xl mx-auto">
-          A selection of recent work.
+  <!-- Book Preview Section -->
+  <section class="relative z-10 py-[var(--space-section-md)] bg-background-secondary">
+    <div class="mx-auto max-w-6xl px-6">
+      <div class="flex flex-col items-center gap-4 text-center mb-12" data-reveal>
+        <Badge variant="brand" pill>El Libro</Badge>
+        <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground">
+          Una obra de valor histórico y cultural
+        </h2>
+        <p class="text-lg text-foreground-muted max-w-2xl">
+          {book.data.description}
         </p>
-      </div>
-
-      <div class="grid gap-6 md:grid-cols-2" data-reveal data-reveal-delay="1">
-        {featuredProjects.map((project) => (
-          <Card variant="elevated" hover padding="lg" href={`/projects/${project.id.replace(/\.mdx?$/, '')}`} class="group flex flex-col">
-            <div class="flex flex-1 flex-col">
-              <div class="mb-3 flex items-start justify-between gap-4">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500 shrink-0">
-                  <Icon name="layers" size="sm" />
-                </div>
-                <Icon name="arrow-up-right" size="sm" class="text-foreground-muted group-hover:text-brand-500 transition-colors shrink-0" />
-              </div>
-              <div class="mb-2 flex items-baseline gap-2">
-                <h3 class="font-display text-lg font-bold text-foreground">{project.data.title}</h3>
-                {project.data.year && (
-                  <span class="text-xs text-foreground-muted">{project.data.year}</span>
-                )}
-              </div>
-              <p class="text-sm text-foreground-muted leading-relaxed mb-4 flex-1">{project.data.description}</p>
-              <div class="flex flex-wrap gap-1.5">
-                {project.data.tags.map((tag) => (
-                  <Badge variant="brand">{tag}</Badge>
-                ))}
-              </div>
-            </div>
-          </Card>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- Testimonials -->
-  <section class="relative z-10 py-[var(--space-section-md)] bg-background border-t border-border">
-    <div class="mx-auto max-w-6xl px-6 flex flex-col gap-8">
-      <div class="flex flex-col items-center gap-4 text-center" data-reveal>
-        <div class="flex flex-col items-center gap-6">
-          <Badge variant="brand" pill>Testimonials</Badge>
-          <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground">
-            What clients say
-          </h2>
-        </div>
-        <p class="text-lg text-foreground-muted">
-          Replace these with your own client quotes.
-        </p>
-      </div>
-
-      <div class="grid gap-6 md:grid-cols-2" data-reveal data-reveal-delay="1">
-        <!-- Testimonial 1 -->
-        <Card variant="elevated" padding="lg" hover>
-          <div class="flex flex-col h-full gap-4">
-            <div class="flex gap-1 text-brand-500" role="img" aria-label="5 out of 5 stars">
-              {[...Array(5)].map(() => (
-                <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20" aria-hidden="true">
-                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                </svg>
-              ))}
-            </div>
-            <blockquote class="flex-1 text-foreground-muted leading-relaxed">
-              "The new site launched on time and hit every goal we set. Performance improved dramatically — load times dropped and the feedback from our customers has been overwhelmingly positive."
-            </blockquote>
-            <div class="flex items-center gap-3 pt-4 border-t border-border">
-              <div class="w-9 h-9 rounded-full bg-gradient-to-br from-brand-500/30 to-brand-500/10 flex items-center justify-center text-brand-500 font-bold text-sm shrink-0">
-                A
-              </div>
-              <div>
-                <p class="text-sm font-semibold text-foreground">Alex Morgan</p>
-                <p class="text-xs text-foreground-muted">Founder, Bright Studio</p>
-              </div>
-            </div>
-          </div>
-        </Card>
-
-        <!-- Testimonial 2 -->
-        <Card variant="elevated" padding="lg" hover>
-          <div class="flex flex-col h-full gap-4">
-            <div class="flex gap-1 text-brand-500" role="img" aria-label="5 out of 5 stars">
-              {[...Array(5)].map(() => (
-                <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20" aria-hidden="true">
-                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                </svg>
-              ))}
-            </div>
-            <blockquote class="flex-1 text-foreground-muted leading-relaxed">
-              "Straightforward from first conversation to final handover. The right questions were asked, we were kept in the loop throughout, and the end result exceeded what we imagined. Would recommend without hesitation."
-            </blockquote>
-            <div class="flex items-center gap-3 pt-4 border-t border-border">
-              <div class="w-9 h-9 rounded-full bg-gradient-to-br from-brand-500/30 to-brand-500/10 flex items-center justify-center text-brand-500 font-bold text-sm shrink-0">
-                S
-              </div>
-              <div>
-                <p class="text-sm font-semibold text-foreground">Sarah Chen</p>
-                <p class="text-xs text-foreground-muted">CEO, Luma Agency</p>
-              </div>
-            </div>
-          </div>
-        </Card>
-      </div>
-    </div>
-  </section>
-
-  <!-- Blog -->
-  <section class="relative z-10 py-[var(--space-section-md)] bg-background-secondary border-t border-border">
-    <div class="mx-auto max-w-6xl px-6 flex flex-col gap-8">
-      <div class="flex items-end justify-between" data-reveal>
-        <div class="flex flex-col gap-6">
-          <Badge variant="brand" pill class="self-start">From the blog</Badge>
-          <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground">
-            Featured
-          </h2>
-        </div>
-        <a href="/blog" class="hidden sm:inline-flex items-center gap-1.5 text-sm font-medium text-brand-500 hover:text-brand-600 transition-colors shrink-0">
-          View all posts
-          <Icon name="arrow-right" size="sm" />
-        </a>
       </div>
 
       <div class="grid gap-6 md:grid-cols-3" data-reveal data-reveal-delay="1">
-        {posts.map((post) => (
-          <BlogCard
-            title={post.data.title}
-            description={post.data.description}
-            href={`/blog/${post.id.replace('en/', '')}`}
-            publishedAt={post.data.publishedAt}
-            tags={post.data.tags}
-            author={post.data.author}
-            image={post.data.image}
-            svgSlug={post.data.svgSlug}
-          />
-        ))}
+        <Card hover padding="lg">
+          <div class="flex flex-col items-center text-center gap-4">
+            <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500">
+              <Icon name="book" size="lg" />
+            </div>
+            <h3 class="text-lg font-semibold text-foreground">Contenido Exclusivo</h3>
+            <p class="text-sm text-foreground-muted">
+              {book.data.pages} páginas con mini-biografías detalladas de médicos barineses 
+              que marcaron la historia.
+            </p>
+          </div>
+        </Card>
+
+        <Card hover padding="lg">
+          <div class="flex flex-col items-center text-center gap-4">
+            <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500">
+              <Icon name="history" size="lg" />
+            </div>
+            <h3 class="text-lg font-semibold text-foreground">Legado Preservado</h3>
+            <p class="text-sm text-foreground-muted">
+              Historias de médicos desde el siglo XIX hasta la actualidad, 
+              documentadas para las futuras generaciones.
+            </p>
+          </div>
+        </Card>
+
+        <Card hover padding="lg">
+          <div class="flex flex-col items-center text-center gap-4">
+            <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-brand-500/20 to-brand-500/5 flex items-center justify-center text-brand-500">
+              <Icon name="package" size="lg" />
+            </div>
+            <h3 class="text-lg font-semibold text-foreground">Edición de Colección</h3>
+            <p class="text-sm text-foreground-muted">
+              Disponible en {book.data.coverOptions.join(' o ')}. 
+              Un libro que todo médico e historiador debe tener.
+            </p>
+          </div>
+        </Card>
       </div>
 
-      <div class="text-center sm:hidden">
-        <Button variant="outline" href="/blog">
-          View all posts
-          <Icon name="arrow-right" size="sm" />
+      <div class="text-center mt-10">
+        <Button size="lg" href="/libro">
+          <Icon name="book-open" size="sm" />
+          Ver Detalles del Libro
         </Button>
       </div>
     </div>
   </section>
 
- <!-- CTA -->
+  <!-- CTA Section -->
   <section class="relative z-10 py-[var(--space-section-md)] bg-background">
-    <div class="mx-auto max-w-2xl px-6 text-center" data-reveal>
-      <h2 class="font-display text-4xl font-bold text-foreground mb-4 text-balance">
-        Have a project in mind?
+    <div class="mx-auto max-w-4xl px-6 text-center" data-reveal>
+      <h2 class="font-display text-4xl font-bold text-foreground mb-4">
+        Adquiere tu ejemplar hoy
       </h2>
-      <p class="text-lg text-foreground-muted mb-8 text-balance">
-        Whether it's a new build or something that needs a fresh perspective — I'd love to hear about it.
+      <p class="text-lg text-foreground-muted mb-8 max-w-2xl mx-auto">
+        Forma parte de la preservación de la historia médica de Venezuela. 
+        Cada compra apoya la investigación y documentación de nuestra memoria colectiva.
       </p>
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <Button size="lg" href="/contact">
-          Start a project
-          <Icon name="arrow-right" size="sm" />
+        <Button size="lg" href="/libro/comprar">
+          <Icon name="shopping-cart" size="sm" />
+          Comprar Ahora - $35 USD
         </Button>
-        <Button size="lg" variant="outline" href="/about">
-          More about me
+        <Button size="lg" variant="outline" href="/contact">
+          <Icon name="message-circle" size="sm" />
+          Hacer una Consulta
         </Button>
       </div>
     </div>
   </section>
 
-<script>
-  function initCountup() {
-    const counters = document.querySelectorAll<HTMLElement>('[data-countup]:not([data-countup-init])');
-    if (counters.length === 0) return;
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        observer.unobserve(entry.target);
-        const el = entry.target as HTMLElement;
-        const target = parseInt(el.dataset.countup ?? '0', 10);
-        const suffix = el.dataset.suffix ?? '';
-        const duration = 1200;
-        const start = performance.now();
-        const tick = (now: number) => {
-          const elapsed = now - start;
-          const progress = Math.min(elapsed / duration, 1);
-          const eased = 1 - Math.pow(1 - progress, 3);
-          el.textContent = Math.round(eased * target) + suffix;
-          if (progress < 1) requestAnimationFrame(tick);
-        };
-        requestAnimationFrame(tick);
-      });
-    }, { threshold: 0.4 });
-    counters.forEach((el) => {
-      el.dataset.countupInit = 'true';
-      observer.observe(el);
-    });
-  }
+  <!-- Blog Section -->
+  {posts.length > 0 && (
+    <section class="relative z-10 py-[var(--space-section-md)] bg-background-secondary border-t border-border">
+      <div class="mx-auto max-w-6xl px-6">
+        <div class="flex items-end justify-between mb-8" data-reveal>
+          <div>
+            <Badge variant="brand" pill class="mb-4">Blog</Badge>
+            <h2 class="font-display text-3xl font-bold text-foreground">
+              Artículos Recientes
+            </h2>
+          </div>
+          <a href="/blog" class="hidden sm:inline-flex items-center gap-1.5 text-sm font-medium text-brand-500 hover:text-brand-600 transition-colors">
+            Ver todos
+            <Icon name="arrow-right" size="sm" />
+          </a>
+        </div>
 
-  document.addEventListener('astro:page-load', initCountup);
-</script>
+        <div class="grid gap-6 md:grid-cols-3" data-reveal data-reveal-delay="1">
+          {posts.map((post) => (
+            <Card variant="elevated" hover href={`/blog/${post.id.replace('en/', '')}`} class="group flex flex-col">
+              <div class="flex flex-col h-full">
+                <div class="mb-3">
+                  <span class="text-xs text-foreground-muted">
+                    {new Date(post.data.publishedAt).toLocaleDateString('es-VE', { 
+                      year: 'numeric', 
+                      month: 'long', 
+                      day: 'numeric' 
+                    })}
+                  </span>
+                </div>
+                <h3 class="text-lg font-semibold text-foreground mb-2 group-hover:text-brand-500 transition-colors">
+                  {post.data.title}
+                </h3>
+                <p class="text-sm text-foreground-muted line-clamp-3 flex-1">
+                  {post.data.description}
+                </p>
+                <div class="mt-4 flex items-center gap-2 text-brand-500 text-sm font-medium">
+                  Leer más
+                  <Icon name="arrow-right" size="sm" class="group-hover:translate-x-1 transition-transform" />
+                </div>
+              </div>
+            </Card>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <script>
+    function initCountup() {
+      const counters = document.querySelectorAll<HTMLElement>('[data-countup]:not([data-countup-init])');
+      if (counters.length === 0) return;
+      
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          observer.unobserve(entry.target);
+          
+          const el = entry.target as HTMLElement;
+          const target = parseInt(el.dataset.countup ?? '0', 10);
+          const duration = 1500;
+          const start = performance.now();
+          
+          const tick = (now: number) => {
+            const elapsed = now - start;
+            const progress = Math.min(elapsed / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            el.textContent = Math.round(eased * target).toLocaleString();
+            if (progress < 1) requestAnimationFrame(tick);
+          };
+          
+          requestAnimationFrame(tick);
+        });
+      }, { threshold: 0.5 });
+      
+      counters.forEach((el) => {
+        el.dataset.countupInit = 'true';
+        observer.observe(el);
+      });
+    }
+
+    document.addEventListener('astro:page-load', initCountup);
+  </script>
 </LandingLayout>

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="900" viewBox="0 0 600 900">
+  <rect fill="#1e3a5f" width="600" height="900"/>
+  <rect fill="#2d3748" x="50" y="100" width="500" height="700" rx="10"/>
+  <rect fill="#fafafa" x="70" y="120" width="460" height="660" rx="5"/>
+  <text x="300" y="300" font-family="Playfair Display, serif" font-size="42" fill="#1e3a5f" text-anchor="middle" font-weight="bold">Los Médicos</text>
+  <text x="300" y="350" font-family="Playfair Display, serif" font-size="42" fill="#1e3a5f" text-anchor="middle" font-weight="bold">del Estado</text>
+  <text x="300" y="400" font-family="Playfair Display, serif" font-size="42" fill="#c9a227" text-anchor="middle" font-weight="bold">Barinas</text>
+  <line x1="150" y1="450" x2="450" y2="450" stroke="#c9a227" stroke-width="3"/>
+  <text x="300" y="500" font-family="Inter, sans-serif" font-size="20" fill="#2d3748" text-anchor="middle">Dr. Pedro Rafael Medina Millan</text>
+  <text x="300" y="700" font-family="Inter, sans-serif" font-size="16" fill="#2d3748" text-anchor="middle">Compendio de mini-biografías</text>
+  <text x="300" y="720" font-family="Inter, sans-serif" font-size="16" fill="#2d3748" text-anchor="middle">médicas de la región llanera</text>
+  <rect fill="#c9a227" x="250" y="800" width="100" height="20" rx="2"/>
+</svg>

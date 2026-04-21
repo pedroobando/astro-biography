@@ -1,0 +1,129 @@
+{
+  "name": "Dr. Pedro Rafael Medina Millan",
+  "specialty": "Pediatría Puericultor",
+  "birthDate": "1939-11-15",
+  "birthPlace": "Barcelona, Estado Anzoátegui, Venezuela",
+  "age": 87,
+  "status": "Jubilado",
+  "currentLocation": "Barcelona, Venezuela",
+  "nickname": "El Tío Pedrito",
+  "zodiacSign": "Escorpio",
+  "family": {
+    "parents": {
+      "father": {
+        "name": "Pedro Feliz Medina",
+        "years": "1918-1998",
+        "profession": "Sastre, propietario de varias sastrerías en Barcelona"
+      },
+      "mother": {
+        "name": "María de Jesús Millan de Medina",
+        "years": "1922-2015",
+        "profession": "Ama de Casa"
+      }
+    },
+    "siblings": [
+      { "name": "Alicia Gerardina", "birthYear": 1942 },
+      { "name": "Luis Felipe", "birthYear": 1954 },
+      { "name": "Francisco", "birthYear": 1957 }
+    ],
+    "medicalRelatives": [
+      "Dr. Henry Eduardo - Cirujano General y Urólogo (ULA Mérida)",
+      "Dra. Georgina Gerardina - Pediatra Alergólogo (ULA Mérida)"
+    ]
+  },
+  "ownFamily": {
+    "maritalStatus": "Casado",
+    "spouse": {
+      "name": "Dra. Otilia de los Ángeles Quevedo de Medina",
+      "profession": "Médico Pediatra, Jubilada"
+    },
+    "marriageDate": "1978-10-18",
+    "children": [
+      { "name": "Pedro Antonio Medina-Contreras", "age": 45, "profession": "Ingeniero de Sistemas" },
+      { "name": "Rosa María Medina-Contreras", "age": 42, "profession": "Doctora en Medicina (Pediatra)" },
+      { "name": "Carlos Alberto Medina-Contreras", "age": 38, "profession": "Administrador de Empresas" }
+    ]
+  },
+  "education": {
+    "primary": {
+      "institution": "Unidad Educativa 'República de Venezuela'",
+      "city": "Barcelona",
+      "years": "1958-1964",
+      "anecdotes": "Aprendió a leer con la ayuda de su madre maestra; el director lo descubrió leyendo un libro de anatomía de su padre"
+    },
+    "secondary": {
+      "institution": "Liceo 'José Antonio de la Cueva'",
+      "city": "Barcelona",
+      "years": "1964-1970",
+      "anecdotes": "Representó al estado en olimpiadas de matemáticas; cambió su vocación de ingeniero a médico al ver un documental sobre mortalidad infantil en Venezuela"
+    },
+    "university": {
+      "name": "Universidad Central de Venezuela (UCV)",
+      "faculty": "Medicina 'Luis Razetti'",
+      "career": "Medicina",
+      "years": "1970-1976",
+      "graduationDate": "1976-07-22",
+      "title": "Doctor en Ciencias Médicas",
+      "thesis": {
+        "title": "Mortalidad neonatal en el Hospital Universitario de Caracas: Factores de riesgo asociados al bajo peso al nacer",
+        "director": "Dr. José Gregorio Hernández",
+        "awarded": true,
+        "publication": "Revista de la Facultad de Medicina (1976)"
+      }
+    }
+  },
+  "residency": {
+    "hospital": "Hospital J.M. de los Ríos, Caracas",
+    "years": "1977-1980",
+    "chiefResident": "Dra. Beatriz Hernández de Mata",
+    "influentialPediatrician": "Dr. Orlando Centeno - 'Me enseñó que la neonatología es 50% ciencia y 50% paciencia'",
+    "cohortName": "Residentes del 80"
+  },
+  "subspecialties": [
+    {
+      "name": "Neonatología",
+      "institution": "Hospital J.M. de los Ríos + Rotaciones en Chile",
+      "years": "1981-1983",
+      "mentor": "Dr. Pablo Young (Chile)"
+    },
+    {
+      "name": "Infectología Pediátrica",
+      "institution": "Instituto de Medicina Tropical, UCV",
+      "years": "1985",
+      "mentor": "Dr. Fabricio Mendoza"
+    }
+  ],
+  "careerStats": {
+    "childrenAttended": 35000,
+    "generationsOfFamilies": 15,
+    "pediatriciansTrained": 240,
+    "yearsOfService": 60
+  },
+  "office": {
+    "address": "Av. Bolívar, Centro Comercial 'La Fuente', Piso 2, Consultorio 205, Barcelona, Anzoátegui",
+    "openingYear": 1985,
+    "active": true,
+    "hours": "Lunes a Viernes 8:00-12:00 y 14:00-18:00; Sábados 8:00-12:00",
+    "dailyAverage": "25-30 pacientes",
+    "patientAgeRange": "0 días a 18 años"
+  },
+  "legacy": {
+    "messageToPediatricians": "Queridos jóvenes colegas: La pediatría es más que una especialidad, es un calling. Cada niño que atienden es un universo completo, una familia completa. Nunca dejen de aprender, pero sobre todo nunca pierdan la capacidad de sentir empatía. Un buen pediatra sabe escuchar lo que el niño NO dice. Recuerden: el niño siempre tiene la razón - a veces solo necesita que alguien la escuche. Sean mejores que yo, y cuando lo logren, sean aún mejores mañana.",
+    "messageToParents": "A los padres: Ustedes son los verdaderos héroes de la salud de sus hijos. El médico trata, pero ustedes sanan con amor, con presencia, con consistencia. No tengan miedo de hacer preguntas, de buscar segundas opiniones, de confiar en su instinto. Ningún manual reemplaza el amor de un padre por su hijo.",
+    "howToBeRemembered": "Quiero que recuerden que había un doctor que amaba su trabajo, que celebraba cada sonrisa de un niño como victoria personal, que nunca dejó de aprender, que lloró cuando tuvo que llorar y celebró cuando pudo celebrar. Quiero que recuerden que ese doctor creía que cada niño merece vivir, crecer y sonreír - sin importar el código postal de sus padres."
+  },
+  "social": {
+    "email": "drpedromedina@centromedico.ficticio",
+    "phone": "+58 281 555 1234",
+    "whatsapp": "+58 414 789 1234",
+    "instagram": "@drpedromedinapediatria"
+  },
+  "book": {
+    "title": "Los Médicos del Estado Barinas",
+    "price": 35,
+    "currency": "USD",
+    "status": "En fase de corrección",
+    "description": "Compendio de mini-biografías de médicos que aportaron al desarrollo de la medicina en Barinas",
+    "coverOptions": ["Tapa dura", "Tapa blanda"]
+  }
+}
