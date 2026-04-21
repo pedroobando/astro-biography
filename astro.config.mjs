@@ -7,7 +7,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
   output: 'static',
-  site: process.env.SITE_URL || 'https://example.com',
+  site: process.env.SITE_URL || 'https://astro-biography.pages.dev/',
 
   env: {
     schema: {
