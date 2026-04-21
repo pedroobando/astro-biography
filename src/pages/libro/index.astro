@@ -20,48 +20,48 @@ const [profile] = await getCollection('biographyProfile');
   showScrollProgress={true}
 >
   {/* Hero Section */}
-  <Hero layout="split" size="xl">
-    <div slot="left" class="flex flex-col gap-6">
-      <Badge variant="brand" pill class="w-fit">{book.data.status}</Badge>
-      
-      <h1 class="font-display text-4xl md:text-5xl font-bold text-foreground leading-tight">
-        {book.data.title}
-      </h1>
-      
-      <p class="text-xl text-brand-500 font-medium">
+  <Hero layout="split" size="xl" showGlow>
+    <Badge slot="badge" variant="brand" pill>{book.data.status}</Badge>
+    
+    <h1 slot="title">
+      {book.data.title}
+    </h1>
+    
+    <div slot="description">
+      <p class="text-xl text-brand-500 font-medium mb-4">
         Por {book.data.author}
       </p>
       
-      <p class="text-lg text-foreground-muted leading-relaxed">
+      <p class="text-lg text-foreground-muted leading-relaxed mb-6">
         {book.data.description}
       </p>
 
-      <div class="flex flex-wrap gap-4 items-center">
+      <div class="flex flex-wrap gap-4 items-center mb-6">
         <span class="text-4xl font-bold text-brand-500">${book.data.price}</span>
         <span class="text-foreground-muted">{book.data.currency}</span>
         <span class="text-foreground-muted">|</span>
         <span class="text-foreground-muted">{book.data.pages} páginas</span>
       </div>
 
-      <div class="flex flex-col sm:flex-row gap-4 mt-2">
-        <Button size="lg" href="/libro/comprar">
-          <Icon name="shopping-cart" size="sm" />
-          Comprar Ahora
-        </Button>
-        <Button size="lg" variant="outline" href="#contenido">
-          <Icon name="book-open" size="sm" />
-          Ver Contenido
-        </Button>
-      </div>
-
-      <div class="flex flex-wrap gap-2 mt-2">
+      <div class="flex flex-wrap gap-2">
         {book.data.coverOptions.map((option) => (
           <Badge variant="outline" size="sm">{option}</Badge>
         ))}
       </div>
     </div>
 
-    <div slot="right" class="relative">
+    <Fragment slot="actions">
+      <Button size="lg" href="/libro/comprar">
+        <Icon name="shopping-cart" size="sm" />
+        Comprar Ahora
+      </Button>
+      <Button size="lg" variant="outline" href="#contenido">
+        <Icon name="book-open" size="sm" />
+        Ver Contenido
+      </Button>
+    </Fragment>
+
+    <div slot="aside" class="relative">
       <div class="relative aspect-[3/4] max-w-md mx-auto">
         <div class="absolute inset-0 bg-gradient-to-br from-brand-500/20 to-brand-500/5 rounded-2xl transform rotate-3"></div>
         <Image
