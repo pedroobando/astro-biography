@@ -4,13 +4,9 @@ import sitemap from '@astrojs/sitemap';
 import react from '@astrojs/react';
 import icon from 'astro-icon';
 import tailwindcss from '@tailwindcss/vite';
-import vercel from '@astrojs/vercel';
-import netlify from '@astrojs/netlify';
-
-const isNetlify = process.env.DEPLOY_TARGET === 'netlify';
 
 export default defineConfig({
-  adapter: isNetlify ? netlify() : vercel(),
+  output: 'static',
   site: process.env.SITE_URL || 'https://example.com',
 
   env: {
@@ -33,12 +29,7 @@ export default defineConfig({
     layout: 'constrained',
   },
 
-  integrations: [
-    react(),
-    mdx(),
-    sitemap(),
-    icon(),
-  ],
+  integrations: [react(), mdx(), sitemap(), icon()],
 
   vite: {
     plugins: [tailwindcss()],
@@ -54,5 +45,4 @@ export default defineConfig({
       wrap: true,
     },
   },
-
 });

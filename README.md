@@ -565,20 +565,6 @@ A static default OG image (`public/og-default.svg`) serves as the social preview
 
 ## Deployment
 
-Configuration files included for major platforms.
-
-### Vercel (Recommended)
-
-```bash
-vercel
-```
-
-### Netlify
-
-```bash
-netlify deploy --prod
-```
-
 ### Cloudflare Pages
 
 ```bash
