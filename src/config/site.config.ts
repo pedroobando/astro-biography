@@ -62,7 +62,7 @@ const siteConfig: SiteConfig = {
   description:
     'Biografía oficial del Dr. Pedro Rafael Medina Millan - Pediatra Puericultor con 60 años de trayectoria. Autor del libro "Los Médicos del Estado Barinas".',
   url: SITE_URL || 'https://drpedromedina.com',
-  ogImage: '/images/doctor.jpg',
+  ogImage: '/images/doctor.png',
   author: 'Pedro Obando Medina',
   email: 'drpedromedina@centromedico.ficticio',
   phone: '+58 281 555 1234',
