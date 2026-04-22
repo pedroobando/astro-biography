@@ -16,9 +16,9 @@ const allPosts = await getCollection('blog', ({ data }) => {
   return import.meta.env.PROD ? data.draft !== true : true;
 });
 
-// Filter by English locale and sort by date
+// Filtrar por locale español y ordenar por fecha
 const posts = allPosts
-  .filter((post) => post.data.locale === 'en')
+  .filter((post) => post.data.locale === 'es')
   .sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf());
 
 // Separate featured posts (shown in hero section)
@@ -33,21 +33,21 @@ const allTags = [...new Set(posts.flatMap((post) => post.data.tags))].sort();
 
 const getPostUrl = (postId: string) => {
   // Remove locale prefix from id (e.g., "en/welcome-to-velocity" -> "welcome-to-velocity")
-  const slug = postId.replace('en/', '');
+  const slug = postId.replace('es/', '');
   return `/blog/${slug}`;
 };
 ---
 
-<PageLayout title="Blog — Astro Rocket" description="Articles on web design, development, and the web by Astro Rocket." showScrollProgress eagerReveal>
+<PageLayout title="Blog — Dr. Pedro Medina" description="Artículos médicos sobre pediatría, salud infantil y desarrollo infantil por el Dr. Pedro Rafael Medina Millan." showScrollProgress eagerReveal>
   <Hero layout="centered" size="sm">
     <Badge slot="badge" variant="brand" pill>
       <Icon name="book" size="sm" />
-      All posts
+      Todas las entradas
     </Badge>
 
     <h1 slot="title">Blog</h1>
 
-    <p slot="description">Articles on Astro, web performance, design systems, and building with Astro Rocket.</p>
+    <p slot="description">Artículos médicos sobre pediatría, salud infantil, desarrollo y bienestar de los niños.</p>
   </Hero>
 
   <!-- Featured Posts Section -->
@@ -56,7 +56,7 @@ const getPostUrl = (postId: string) => {
       <section id="featured-section" class="bg-background-secondary py-[var(--space-section-md)] border-t border-border">
         <div class="mx-auto max-w-6xl px-6 flex flex-col gap-8">
           <h2 class="font-display text-foreground text-3xl md:text-4xl font-bold" data-reveal>
-            Featured
+            Destacados
           </h2>
 
           <div class="grid gap-6 md:grid-cols-2" data-reveal data-reveal-delay="1">
@@ -86,21 +86,21 @@ const getPostUrl = (postId: string) => {
       <div class="flex flex-wrap items-center justify-between gap-4" data-reveal>
         {
           featuredPosts.length > 0 && nonFeaturedPosts.length > 0 && (
-            <h2 class="font-display text-foreground text-3xl md:text-4xl font-bold">All posts</h2>
+            <h2 class="font-display text-foreground text-3xl md:text-4xl font-bold">Todas las entradas</h2>
           )
         }
 
         {allTags.length > 0 && (
           <div class="flex items-center gap-3 ml-auto">
             <label for="tag-filter" class="text-sm font-medium text-foreground-muted whitespace-nowrap">
-              Filter
+              Filtrar
             </label>
             <div class="relative">
               <select
                 id="tag-filter"
                 class="tag-select appearance-none pl-3 pr-8 py-1.5 rounded-full border border-border bg-background text-sm font-medium text-foreground cursor-pointer focus:outline-none focus:border-brand-500 transition-colors"
               >
-                <option value="all">All posts</option>
+                <option value="all">Todas las entradas</option>
                 {allTags.map((tag) => (
                   <option value={tag}>{tag}</option>
                 ))}
@@ -139,7 +139,7 @@ const getPostUrl = (postId: string) => {
             <div class="bg-background mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full">
               <Icon name="file-text" size="lg" class="text-foreground-muted" />
             </div>
-            <p class="text-foreground-muted text-lg">No posts found</p>
+            <p class="text-foreground-muted text-lg">No se encontraron artículos</p>
           </div>
         ) : null
       }
@@ -148,15 +148,15 @@ const getPostUrl = (postId: string) => {
         <div class="bg-background mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full">
           <Icon name="file-text" size="lg" class="text-foreground-muted" />
         </div>
-        <p class="text-foreground-muted text-lg">No posts found for this tag</p>
+        <p class="text-foreground-muted text-lg">No se encontraron artículos para esta etiqueta</p>
       </div>
     </div>
   </section>
 
   <!-- Follow CTA Section -->
   <CTA variant="default" size="md" maxWidth="lg" glow={false} data-reveal class:list={[featuredPosts.length > 0 && '!bg-background-secondary']}>
-    <h2 slot="heading" class="!text-4xl">Follow along</h2>
-    <p slot="description" class="!text-lg text-balance">Stay in the loop — new articles, thoughts, and updates.</p>
+    <h2 slot="heading" class="!text-4xl">Mantente al día</h2>
+    <p slot="description" class="!text-lg text-balance">Nuevos artículos, reflexiones y actualizaciones sobre salud infantil.</p>
 
     <div class="flex flex-wrap items-center justify-center gap-3">
       <a
@@ -164,7 +164,7 @@ const getPostUrl = (postId: string) => {
         class="inline-flex items-center gap-2 rounded-full border border-border bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-brand-500 hover:text-brand-500"
       >
         <Icon name="rss" size="sm" />
-        RSS Feed
+        RSS
       </a>
       {socialLinks.map((link) => (
         <a
@@ -239,7 +239,7 @@ const getPostUrl = (postId: string) => {
       }
 
       if (filterCount) {
-        filterCount.textContent = `${visibleCount} post${visibleCount !== 1 ? 's' : ''}`;
+        filterCount.textContent = `${visibleCount} artículo${visibleCount !== 1 ? 's' : ''}`;
         filterCount.classList.remove('hidden');
       }
     });

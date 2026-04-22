@@ -4,7 +4,7 @@ import { glob } from 'astro/loaders';
 
 // Blog collection with Content Layer API
 const blog = defineCollection({
-  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/blog' }),
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/blog/es' }),
   schema: ({ image }) =>
     z.object({
       title: z.string().max(100),

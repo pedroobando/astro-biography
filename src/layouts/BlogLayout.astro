@@ -43,7 +43,7 @@ const {
 const ogImage = image?.src || siteConfig.ogImage;
 
 const breadcrumbs = [
-  { label: 'Home', href: '/' },
+  { label: 'Inicio', href: '/' },
   { label: 'Blog', href: '/blog' },
   { label: title },
 ];
@@ -72,7 +72,7 @@ const fullUrl = new URL(Astro.url.pathname, Astro.site).toString();
     size="lg"
     showThemeSelector
     showCta={false}
-    cta={{ label: 'Get in touch', href: '/contact' }}
+    cta={{ label: 'Contacto', href: '/contacto' }}
     showScrollProgress
   />
 
@@ -121,7 +121,7 @@ const fullUrl = new URL(Astro.url.pathname, Astro.site).toString();
               <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"
               ></path>
             </svg>
-            Back to Blog
+            Volver al Blog
           </a>
 
           <!-- Share buttons -->
@@ -134,14 +134,14 @@ const fullUrl = new URL(Astro.url.pathname, Astro.site).toString();
   <!-- Related Posts -->
   {tags.length > 0 && (
     <div class="mx-auto max-w-screen-xl px-6" data-reveal>
-      <RelatedPosts currentSlug={slug} tags={tags} locale="en" maxPosts={3} />
+      <RelatedPosts currentSlug={slug} tags={tags} locale="es" maxPosts={3} />
     </div>
   )}
 
   <!-- Follow Along -->
   <CTA variant="default" size="md" maxWidth="lg" glow={false} data-reveal class="bg-background-secondary">
-    <h2 slot="heading" class="!text-4xl">Follow along</h2>
-    <p slot="description" class="!text-lg text-balance">Stay in the loop — new articles, thoughts, and updates.</p>
+    <h2 slot="heading" class="!text-4xl">Mantente al día</h2>
+    <p slot="description" class="!text-lg text-balance">Nuevos artículos, reflexiones y actualizaciones sobre salud infantil.</p>
 
     <div class="flex flex-wrap items-center justify-center gap-3">
       <a
@@ -149,7 +149,7 @@ const fullUrl = new URL(Astro.url.pathname, Astro.site).toString();
         class="inline-flex items-center gap-2 rounded-full border border-border bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-brand-500 hover:text-brand-500"
       >
         <Icon name="rss" size="sm" />
-        RSS Feed
+        RSS
       </a>
       {socialLinks.map((link) => (
         <a

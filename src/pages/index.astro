@@ -267,7 +267,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
 
         <div class="grid gap-6 md:grid-cols-3" data-reveal data-reveal-delay="1">
           {posts.map((post) => (
-            <Card variant="elevated" hover href={`/blog/${post.id.replace('en/', '')}`} class="group flex flex-col">
+            <Card variant="elevated" hover href={`/blog/${post.id.replace('es/', '')}`} class="group flex flex-col">
               <div class="flex flex-col h-full">
                 <div class="mb-3">
                   <span class="text-xs text-foreground-muted">
